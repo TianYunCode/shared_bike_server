@@ -1,0 +1,96 @@
+syntax = "proto2";
+
+package tianyun;
+
+message mobile_request
+{
+    required string mobile = 1;
+}
+
+message mobile_response
+{
+    required int32 code   = 1;   //响应代号
+    required int32 icode  = 2;   //验证码
+    optional string data  = 3;   //失败原因
+}
+
+
+message login_request
+{
+    required string mobile  = 1;    // 手机号码
+    required int32  icode   = 2;    // 验证码
+}
+
+
+message login_response
+{
+    required int32   code   = 1;    // 响应代号
+    optional string  desc   = 2;    // 验证码
+}
+
+message recharge_request
+{
+    required string mobile  = 1;    // 手机号码
+    required int32  amount  = 2;    // 充值金额
+}
+
+
+message recharge_response
+{
+    required int32   code   = 1;    // 响应代号
+    optional string  desc   = 2;    // 验证码
+    required int32  balance = 3;    // 最新的余额
+}
+
+message account_balance_request
+{
+    required string mobile = 1;
+}
+
+message account_balance_response
+{
+    required int32   code   = 1;    // 响应代号
+    optional string  desc   = 2;    // 验证码
+    required int32  balance = 3;
+}
+
+message list_account_records_request
+{
+    required string mobile = 1;
+}
+
+message list_account_records_response
+{
+    required int32   code   = 1;    // 响应代号
+    optional string  desc   = 2;    // 验证码
+    message account_record
+    {
+        required int32  type      = 1; // 0 : 骑行消费,  1 : 充值, 2 : 退款
+        required int32  limit     = 2; // 消费或者充值金额
+        required uint64 timestamp = 3; // 记录发生时的时间戳
+    }
+
+    repeated account_record records = 3;
+}
+
+message list_travel_records_request
+{
+    required string mobile = 1;
+}
+
+message list_travel_records_response
+{
+    required int32   code   = 1;    // 响应代号
+    optional string  desc   = 2;    // 验证码
+    message travel_record
+    {
+        required uint64 stm      = 1;   // start timestamp
+        required uint32 duration = 2;   // 骑行时长
+        required uint32 amount   = 3;   // 所耗金额
+    }
+
+    required double              mileage   = 3; // 里程
+    required double              discharge = 4; // 排放
+    required double              calorie   = 5; // 卡路里
+    repeated travel_record       records   = 6;
+}
